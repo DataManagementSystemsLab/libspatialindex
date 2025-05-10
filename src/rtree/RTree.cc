@@ -28,7 +28,7 @@
 #include <cstring>
 #include <cmath>
 #include <limits>
-
+#include <iostream>
 #include <spatialindex/SpatialIndex.h>
 #include <spatialindex/capi/IdVisitor.h>
 #include "Node.h"
@@ -39,6 +39,7 @@
 
 using namespace SpatialIndex::RTree;
 using namespace SpatialIndex;
+using namespace std;
 
 SpatialIndex::RTree::Data::Data(uint32_t len, uint8_t* pData, Region& r, id_type id)
 	: m_id(id), m_region(r), m_pData(nullptr), m_dataLength(len)
@@ -511,7 +512,7 @@ void SpatialIndex::RTree::RTree::containsWhatQuery(const IShape& query, IVisitor
 		{
 			NodePtr n = st.top(); st.pop();
 
-			if(n->m_level == 0)
+			
 			{
 				v.visitNode(*n);
 
@@ -525,7 +526,7 @@ void SpatialIndex::RTree::RTree::containsWhatQuery(const IShape& query, IVisitor
 					}
 				}
 			}
-			else //not a leaf
+			//else //not a leaf
 			{
 				if(query.containsShape(n->m_nodeMBR))
 				{
@@ -1438,13 +1439,13 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 {
 	std::stack<NodePtr> st;
 	NodePtr root = readNode(m_rootID);
-
+	cout << "root " << m_rootID <<"\n";
 	if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
 
 	while (! st.empty())
 	{
 		NodePtr n = st.top(); st.pop();
-
+		cout << "node " << n->m_level << "\n";
 		if (n->m_level == 0)
 		{
 			v.visitNode(*n);

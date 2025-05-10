@@ -39,8 +39,10 @@ namespace SpatialIndex
 		class Index;
 		class Node;
 
+
 		typedef Tools::PoolPointer<Node> NodePtr;
 
+		
 		class Node : public SpatialIndex::INode
 		{
 		public:
