@@ -31,11 +31,13 @@
 #include <iostream>
 #include <spatialindex/SpatialIndex.h>
 #include <spatialindex/capi/IdVisitor.h>
-#include "Node.h"
-#include "Leaf.h"
-#include "Index.h"
-#include "BulkLoader.h"
-#include "RTree.h"
+
+
+#include <spatialindex/rtree/RTree.h>
+#include "spatialindex/rtree/Node.h"
+#include "spatialindex/rtree/Leaf.h"
+#include "spatialindex/rtree/Index.h"
+#include "spatialindex/rtree/BulkLoader.h"
 
 using namespace SpatialIndex::RTree;
 using namespace SpatialIndex;
@@ -1445,7 +1447,7 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 	while (! st.empty())
 	{
 		NodePtr n = st.top(); st.pop();
-		cout << "node " << n->m_level << "\n";
+		cout << "node level" << n->m_level << "\n";
 		if (n->m_level == 0)
 		{
 			v.visitNode(*n);

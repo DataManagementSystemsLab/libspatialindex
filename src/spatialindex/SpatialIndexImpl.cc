@@ -26,7 +26,7 @@
 ******************************************************************************/
 #include <spatialindex/SpatialIndex.h>
 
-#include "../rtree/RTree.h"
+#include <spatialindex/rtree/RTree.h>
 #include "../mvrtree/MVRTree.h"
 #include "../tprtree/TPRTree.h"
 

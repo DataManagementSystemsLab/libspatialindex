@@ -28,10 +28,10 @@
 #include <limits>
 
 #include <spatialindex/SpatialIndex.h>
-#include "RTree.h"
-#include "Node.h"
-#include "Leaf.h"
-#include "Index.h"
+#include <spatialindex/rtree/RTree.h>
+#include "spatialindex/rtree/Node.h"
+#include "spatialindex/rtree/Leaf.h"
+#include "spatialindex/rtree/Index.h"
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::RTree;

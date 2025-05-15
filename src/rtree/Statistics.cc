@@ -27,7 +27,7 @@
 
 #include <spatialindex/SpatialIndex.h>
 
-#include "Statistics.h"
+#include "spatialindex/rtree/Statistics.h"
 
 using namespace SpatialIndex::RTree;
 

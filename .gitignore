@@ -10,7 +10,6 @@
 *.o
 *.lo
 *.la
-*build*
 .idea
 CMakeLists.txt.user
 CMakeFiles/

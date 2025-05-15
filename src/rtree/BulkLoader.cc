@@ -35,10 +35,14 @@
 
 #include <spatialindex/SpatialIndex.h>
 
-#include "RTree.h"
-#include "Leaf.h"
-#include "Index.h"
-#include "BulkLoader.h"
+#include <spatialindex/rtree/RTree.h>
+#include <spatialindex/rtree/BulkLoader.h>
+#include <spatialindex/rtree/Leaf.h>
+#include <spatialindex/rtree/Index.h>
+#include <spatialindex/rtree/Node.h>
+//#include "Leaf.h"
+//#include "Index.h"
+//#include "BulkLoader.h"
 
 using namespace SpatialIndex;
 using namespace SpatialIndex::RTree;
