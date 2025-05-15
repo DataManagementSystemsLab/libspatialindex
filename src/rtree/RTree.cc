@@ -1447,7 +1447,7 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 	while (! st.empty())
 	{
 		NodePtr n = st.top(); st.pop();
-		cout << "node level" << n->m_level << "\n";
+	//	cout << "node level" << n->m_level << "\n";
 		if (n->m_level == 0)
 		{
 			v.visitNode(*n);

@@ -2,45 +2,63 @@
 #include <iostream>
 #include <string>
 #include <spatialindex/rtree/RTree.h>
+#include "json.hpp"
+
+using json = nlohmann::json;
 using namespace SpatialIndex;
 using namespace std;
 
 class MyVisitor : public IVisitor {
 public:
+    json result = json::array();
+
     void visitNode(const INode& n) override {
-        cout << "Node: " << n.getIdentifier()  <<" " << n.isIndex() <<" "<< n.isLeaf() ;
-        
-        
+        json nodeJson;
+        nodeJson["type"] = "node";
+        nodeJson["id"] = n.getIdentifier();
+        nodeJson["is_index"] = n.isIndex();
+        nodeJson["is_leaf"] = n.isLeaf();
+
         IShape* shape;
         n.getShape(&shape);
         Region* r = dynamic_cast<Region*>(shape);
         if (r != nullptr) {
-            cout << "Node Rectangle: [(" 
-                 << r->m_pLow[0] << ", " << r->m_pLow[1] << "), (" 
-                 << r->m_pHigh[0] << ", " << r->m_pHigh[1] << ")]" << endl;
+            nodeJson["rectangle"] = {
+                {"low", {r->m_pLow[0], r->m_pLow[1]}},
+                {"high", {r->m_pHigh[0], r->m_pHigh[1]}}
+            };
         }
-        cout << "Children: " << n.getChildrenCount() << endl;
+
+        json children = json::array();
         for (uint32_t i = 0; i < n.getChildrenCount(); ++i) {
-            id_type childId = n.getChildIdentifier(i);
-            cout << "Child ID: " << childId << endl;
+            children.push_back(n.getChildIdentifier(i));
         }
+        nodeJson["children"] = children;
+
+        result.push_back(nodeJson);
         delete shape;
     }
 
     void visitData(const IData& d) override {
-        cout << "Data Node: " << d.getIdentifier() ;
+        json dataJson;
+        dataJson["type"] = "data";
+        dataJson["id"] = d.getIdentifier();
+
         IShape* shape;
         d.getShape(&shape);
         Region* r = dynamic_cast<Region*>(shape);
         if (r != nullptr) {
-            cout << "Data Rectangle: [(" 
-                 << r->m_pLow[0] << ", " << r->m_pLow[1] << "), (" 
-                 << r->m_pHigh[0] << ", " << r->m_pHigh[1] << ")]" << endl;
+            dataJson["rectangle"] = {
+                {"low", {r->m_pLow[0], r->m_pLow[1]}},
+                {"high", {r->m_pHigh[0], r->m_pHigh[1]}}
+            };
         }
+
+        result.push_back(dataJson);
         delete shape;
     }
 
-    void visitData(std::vector<const IData*>& v) override {}
+    void visitData(std::vector<const IData*>&) override {}
 };
 
 int main(int argc, char* argv[]) {
@@ -49,18 +67,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Open the R-tree file
     string rtreeFile = argv[1];
     IStorageManager* diskStorage = StorageManager::loadDiskStorageManager(rtreeFile);
-
-    // Load the R-tree index
-    id_type indexIdentifier = 1; // Assuming the index identifier is 1
+    id_type indexIdentifier = 1;
     ISpatialIndex* tree = RTree::loadRTree(*diskStorage, indexIdentifier);
 
-
-    //tree->getStatistics(cout);
-    cout << (*tree) << endl;
-    // Query the entire R-tree
     double queryLow[2] = { std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest() };
     double queryHigh[2] = { std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
     Region queryRegion(queryLow, queryHigh, 2);
@@ -68,9 +79,9 @@ int main(int argc, char* argv[]) {
     MyVisitor visitor;
     tree->intersectsWithQuery(queryRegion, visitor);
 
+    // Output the final JSON
+    cout << visitor.result.dump(2) << endl;
 
-    cout << (*tree) << endl;
-    // Clean up
     delete tree;
     delete diskStorage;
 
