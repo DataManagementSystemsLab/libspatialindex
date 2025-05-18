@@ -1441,7 +1441,7 @@ void SpatialIndex::RTree::RTree::rangeQuery(RangeQueryType type, const IShape& q
 {
 	std::stack<NodePtr> st;
 	NodePtr root = readNode(m_rootID);
-	cout << "root " << m_rootID <<"\n";
+	//cout << "root " << m_rootID <<"\n";
 	if (root->m_children > 0 && query.intersectsShape(root->m_nodeMBR)) st.push(root);
 
 	while (! st.empty())
