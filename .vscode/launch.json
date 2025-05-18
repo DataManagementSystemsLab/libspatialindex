@@ -1,26 +1,35 @@
 {
   "version": "0.2.0",
   "configurations": [
-   
     {
       "name": "Debug print",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/examples/print",
-      "args": [],
-      "stopAtEntry": false,
+      "args": ["../data/rails_small"],
+      "stopAtEntry": true,
       "cwd": "${workspaceFolder}/examples",
-      "environment": [],
+      "environment": [
+        {
+          "name": "LD_LIBRARY_PATH",
+          "value": "${workspaceFolder}/install/lib"
+        }
+      ],
       "externalConsole": false,
       "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
+        },
+        {
+          "description": "Add libspatialindex.so symbol path",
+          "text": "set solib-search-path ${workspaceFolder}/install/lib",
+          "ignoreFailures": true
         }
       ]
     }
-   
   ]
 }

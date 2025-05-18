@@ -15,6 +15,7 @@ public:
     void visitNode(const INode& n) override {
         json nodeJson;
         nodeJson["type"] = "node";
+        nodeJson["level"]=n.getLevel();
         nodeJson["id"] = n.getIdentifier();
         nodeJson["is_index"] = n.isIndex();
         nodeJson["is_leaf"] = n.isLeaf();
